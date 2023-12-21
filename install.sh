@@ -10,11 +10,10 @@ read -p "EFI partition: " EFI
 
 echo "Please enter your root partition: (e.g /dev/sda2 or /dev/nvme0n1p2)"
 read -p "Root partition: " ROOT
-
-echo "Mounting partitions..."
+echo "Making filesystems..."
 mkfs.fat -F32 $EFI
 mkfs.ext4 $ROOT
-
+echo "Mounting partitions..."
 mount $ROOT /mnt
 mkdir /mnt/boot
 mount $EFI /mnt/boot
@@ -29,5 +28,11 @@ if [ $CONTINUE == "n" ]; then
     echo "Aborting..."
     exit 1
 fi
+echo "================================"
+echo " == Installing base system ==   "
+echo "================================"
+pacstrap /mnt base base-level linux linux-firmware
+echo "Installing core programs..."
+pacstrap /mnt networkmanager vim git
 
-echo "Installing base system..."
+echo "Generating fstab..."
