@@ -1,4 +1,4 @@
-#!bin/bash
+#!/user/bin/env bash
 
 # Note: this installation script assumes that you already have 
 # partitioned your disk e.g. using cfdisk or fdisk
