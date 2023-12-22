@@ -29,10 +29,23 @@ if [ $CONTINUE == "n" ]; then
     exit 1
 fi
 echo "================================"
-echo " == Installing base system ==   "
+echo "  == Installing base system ==  "
 echo "================================"
 pacstrap /mnt base base-level linux linux-firmware
-echo "Installing core programs..."
+echo "Installing core programs..."1
 pacstrap /mnt networkmanager vim git
 
-echo "Generating fstab..."
+echo "Generating filesystem table..."
+genfstab -U /mnt > /mnt/etc/fstab
+
+arch-chroot /mnt
+systemctl enable NetworkManager
+
+echo "================================"
+echo "  == Installing boot loader ==  "
+echo "================================"
+sudo pacman -S efibootmgr grub
+grub-install --target=x86_64-efi —-efi-directory=/boot
+grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "Boot loader setup complete."
