@@ -57,8 +57,8 @@ echo "  == Setting up user account == "
 echo "================================"
 echo "Please enter your username: "
 read -p "Username: " USERNAME
-# fix for useradd not creating home directory
-useradd -m -G wheel,video,audio,tty $USERNAME
+
+useradd -mG wheel,video,audio,tty $USERNAME
 
 passwd
 
