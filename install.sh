@@ -32,7 +32,7 @@ fi
 echo "================================"
 echo "  == Installing base system ==  "
 echo "================================"
-pacstrap /mnt base base-level linux linux-firmware
+pacstrap /mnt base base-devel linux linux-firmware
 echo "Installing core programs..."1
 pacstrap /mnt networkmanager vim git
 
@@ -45,6 +45,8 @@ systemctl enable NetworkManager
 echo "================================"
 echo "  == Installing boot loader ==  "
 echo "================================"
+# fix sudo not found
+
 sudo pacman -S efibootmgr grub
 grub-install --target=x86_64-efi —-efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
