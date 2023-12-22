@@ -57,10 +57,12 @@ echo "  == Setting up user account == "
 echo "================================"
 echo "Please enter your username: "
 read -p "Username: " USERNAME
-useradd -mG wheel,video,audio,tty $USERNAME
+# fix for useradd not creating home directory
+useradd -m -G wheel,video,audio,tty $USERNAME
+
 passwd
-echo "Please enter your hostname: "
-read -p "Hostname: " HOSTNAME
+
+HOSTNAME="arch"
 echo $HOSTNAME > /etc/hostname
 
 echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
@@ -72,6 +74,11 @@ echo "================================"
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+ln -sf /usr/share/zoneinfo/America/Santo_Domingo /etc/localtime
+
+echo "===================================================="
+echo " == Base system installed, you can reboot now ==   "
+echo "===================================================="
 
 REALEND
 
