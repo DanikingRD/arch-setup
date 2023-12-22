@@ -32,9 +32,9 @@ fi
 echo "================================"
 echo "  == Installing base system ==  "
 echo "================================"
-pacstrap /mnt base base-devel linux linux-firmware
+pacstrap /mnt base base-devel linux linux-firmware --noconfirm
 echo "Installing core programs..."1
-pacstrap /mnt networkmanager vim git
+pacstrap /mnt networkmanager vim git --noconfirm
 
 echo "Generating filesystem table..."
 genfstab -U /mnt > /mnt/etc/fstab
@@ -45,9 +45,8 @@ systemctl enable NetworkManager
 echo "================================"
 echo "  == Installing boot loader ==  "
 echo "================================"
-# fix sudo not found
 
-sudo pacman -S efibootmgr grub
+sudo pacman -S efibootmgr grub --noconfirm
 grub-install --target=x86_64-efi —-efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -56,11 +55,23 @@ echo "Boot loader setup complete."
 echo "================================"
 echo "  == Setting up user account == "
 echo "================================"
-useradd -mG wheel,video,audio,tty daniking
+echo "Please enter your username: "
+read -p "Username: " USERNAME
+useradd -mG wheel,video,audio,tty $USERNAME
 passwd
 echo "Please enter your hostname: "
 read -p "Hostname: " HOSTNAME
 echo $HOSTNAME > /etc/hostname
+
+echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
+echo "================================"
+echo "  == Setting up time zone ==    "
+echo "================================"
+# default to en_US.UTF-8
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 
 REALEND
 
