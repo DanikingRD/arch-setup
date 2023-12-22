@@ -39,7 +39,7 @@ pacstrap /mnt networkmanager vim git
 echo "Generating filesystem table..."
 genfstab -U /mnt > /mnt/etc/fstab
 
-arch-chroot /mnt
+cat <<REALEND > /mnt/next.sh
 systemctl enable NetworkManager
 
 echo "================================"
@@ -60,5 +60,7 @@ echo "Please enter your hostname: "
 read -p "Hostname: " HOSTNAME
 echo $HOSTNAME > /etc/hostname
 
-echo "Uncommenting wheel group in sudoers file..."
+REALEND
 
+chmod +x /mnt/next.sh
+arch-chroot /mnt ./next.sh
