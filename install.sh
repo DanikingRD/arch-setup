@@ -53,7 +53,7 @@ echo "  == Installing boot loader ==  "
 echo "================================"
 
 sudo pacman -S efibootmgr grub --noconfirm
-grub-install --target=x86_64-efi —-efi-directory=/boot
+grub-install --target=x86_64-efi --efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "Boot loader setup complete."
@@ -83,7 +83,7 @@ echo "================================"
 echo "  == Setting up audio ==        "
 echo "================================"
 pacman -S  pulseaudio --noconfirm
-systemctl enable pulseaudio
+systemctl enable pulseaudiox`
 
 echo "===================================================="
 echo " == Base system installed, you can reboot now ==   "
