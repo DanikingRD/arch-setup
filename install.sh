@@ -3,6 +3,8 @@
 # Note: this installation script assumes that you already have 
 # partitioned your disk e.g. using cfdisk or fdisk
 
+set -e # exit on error
+
 lsblk
 
 echo "Please enter your EFI partition: (e.g /dev/sda1 or /dev/nvme0n1p1)"
