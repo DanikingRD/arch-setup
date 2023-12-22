@@ -18,8 +18,8 @@ echo "Please enter your password: "
 read -p "Password: " PASSWORD
 
 echo "Making filesystems..."
-mkfs.fat -F32 $EFI
 mkfs.ext4 $ROOT
+mkfs.fat -F32 $EFI
 echo "Mounting partitions..."
 mount $ROOT /mnt
 mkdir /mnt/boot
@@ -45,7 +45,6 @@ pacstrap /mnt networkmanager vim git --noconfirm
 
 echo "Generating filesystem table..."
 genfstab -U /mnt > /mnt/etc/fstab
-
 cat <<REALEND > /mnt/next.sh
 systemctl enable NetworkManager
 
@@ -79,6 +78,12 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 ln -sf /usr/share/zoneinfo/America/Santo_Domingo /etc/localtime
+
+echo "================================"
+echo "  == Setting up audio ==        "
+echo "================================"
+pacman -S  pulseaudio --noconfirm
+systemctl enable pulseaudio
 
 echo "===================================================="
 echo " == Base system installed, you can reboot now ==   "
