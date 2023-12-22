@@ -10,6 +10,13 @@ read -p "EFI partition: " EFI
 
 echo "Please enter your root partition: (e.g /dev/sda2 or /dev/nvme0n1p2)"
 read -p "Root partition: " ROOT
+
+echo "Please enter your username: "
+read -p "Username: " USERNAME
+
+echo "Please enter your password: "
+read -p "Password: " PASSWORD
+
 echo "Making filesystems..."
 mkfs.fat -F32 $EFI
 mkfs.ext4 $ROOT
@@ -55,12 +62,9 @@ echo "Boot loader setup complete."
 echo "================================"
 echo "  == Setting up user account == "
 echo "================================"
-echo "Please enter your username: "
-read -p "Username: " USERNAME
 
 useradd -mG wheel,video,audio,tty $USERNAME
-
-passwd
+echo "$USERNAME:$PASSWORD" | chpasswd
 
 HOSTNAME="arch"
 echo $HOSTNAME > /etc/hostname
