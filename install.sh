@@ -28,6 +28,7 @@ if [ $CONTINUE == "n" ]; then
     echo "Aborting..."
     exit 1
 fi
+
 echo "================================"
 echo "  == Installing base system ==  "
 echo "================================"
@@ -49,3 +50,15 @@ grub-install --target=x86_64-efi —-efi-directory=/boot
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "Boot loader setup complete."
+
+echo "================================"
+echo "  == Setting up user account == "
+echo "================================"
+useradd -mG wheel,video,audio,tty daniking
+passwd
+echo "Please enter your hostname: "
+read -p "Hostname: " HOSTNAME
+echo $HOSTNAME > /etc/hostname
+
+echo "Uncommenting wheel group in sudoers file..."
+
